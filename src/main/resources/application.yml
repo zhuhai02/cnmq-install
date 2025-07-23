@@ -1,0 +1,140 @@
+spring:
+  application:
+    name: cnmq-install
+server:
+  port: 9080
+
+cnmq:
+  # 部署模式，支持两种 clusterOnDiffNode(在不同的节点上部署一套集群) clusterOnSameNode(在单个节点部署一套集群，测试用)
+  deployType: clusterOnDiffNode
+  # 安装包路径（替换为实际上传的路径）
+  install-package-path: /home/install/install_TLQ-CN-ALL_10.0.4.0.tar.gz
+  # 启动服务脚本
+  shellPath: bin/tong-daemon
+  # 初始化元数据脚本
+  metaShellPath: bin/tong
+  # 集群名称（使用英文名称，和业务、环境等相关词语命名）
+  clusterName: tlq-cn
+  # license sever服务地址
+  license-ips:
+  # license的public key
+  license-public-key:
+  # 在不同的节点上部署一套集群
+  cluster-on-diff-node:
+    # 在每一个节点上，服务安装的目录路径
+    install-path: /home/install/TLQ-CN
+    # 配置的端口，部署程序会检测端口是否被占用，端口被占用无法启动服务，会有日志提醒哪些端口被占用了
+    # zk 客户端连接端口
+    zk-client-port: 2181
+    # zk 数据同步端口
+    zk-sync-data-port: 2888
+    # zk 选举端口
+    zk-election-port: 3888
+    # zk admin管理端口
+    zk-admin-port: 9990
+    # zk 元数据提供端口
+    zk-metrics-port: 8000
+    # zk 要部署到的机器的ip
+    zk-ips:
+      - 10.10.22.162
+      - 10.10.22.163
+      - 10.10.22.164
+    # bookie 服务端口
+    bookie-server-port: 3181
+    # bookie 元数据提供端口
+    bookie-metrics-port: 7000
+    # bookie 要部署到的机器的ip
+    bookie-ips:
+      - 10.10.22.162
+      - 10.10.22.163
+      - 10.10.22.164
+    # broker 元数据提供端口、管理端口
+    broker-admin-port: 8080
+    # broker 服务端口
+    broker-server-port: 6650
+    # broker 要部署到的机器的ip
+    broker-ips:
+      - 10.10.22.162
+      - 10.10.22.163
+      - 10.10.22.164
+    # config-map:
+      # zk 需要修改的配置文件参数
+      # zk:
+      #   dataDir: data/zookeeper
+      # bookie 需要修改的配置文件参数
+      # bookie:
+      #   journalSyncData: true
+      # broker 需要修改的配置文件参数
+      # broker:
+      #   allowAutoTopicCreation: false
+
+  # 在相同的节点上部署一套集群
+  cluster-on-same-node:
+    # 安装节点ip地址
+    ip: 10.10.22.162
+    node-configs:
+      # 第一个安装路径
+      - install-path: /home/install/TLQ-CN1
+        # zk信息
+        zk-info:
+          # zk 客户端连接端口
+          client-port: 2180
+          # zk 数据同步端口
+          sync-data-port: 2880
+          # zk 选举端口
+          election-port: 3880
+          # zk admin管理端口
+          admin-port: 9990
+          # zk 元数据提供端口
+          metrics-port: 8000
+        # bookie信息
+        bookie-info:
+          # bookie 服务端口
+          server-port: 3180
+          # bookie 元数据提供端口
+          metrics-port: 7000
+        # broker信息
+        broker-info:
+          # broker 元数据提供端口、管理端口
+          admin-port: 8080
+          # broker 服务端口
+          server-port: 6650
+
+      # 第二个安装路径，请注意，后面的安装路径，各服务的端口注意修改，因为是在一个节点部署的，否则会出现端口被占用
+      - install-path: /home/install/TLQ-CN2
+        zk-info:
+          client-port: 2181
+          sync-data-port: 2881
+          election-port: 3881
+          admin-port: 9991
+          metrics-port: 8001
+        bookie-info:
+          server-port: 3181
+          metrics-port: 7001
+        broker-info:
+          admin-port: 8081
+          server-port: 6651
+
+      - install-path: /home/install/TLQ-CN3
+        zk-info:
+          client-port: 2182
+          sync-data-port: 2882
+          election-port: 3882
+          admin-port: 9992
+          metrics-port: 8002
+        bookie-info:
+          server-port: 3182
+          metrics-port: 7002
+        broker-info:
+          admin-port: 8082
+          server-port: 6652
+      # config-map:
+      # zk 需要修改的配置文件参数
+      # zk:
+      #   dataDir: data/zookeeper
+      # bookie 需要修改的配置文件参数
+      # bookie:
+      #   journalSyncData: true
+      # broker 需要修改的配置文件参数
+      # broker:
+      #   allowAutoTopicCreation: false
