@@ -1,24 +1,25 @@
 spring:
   application:
-    name: cnmq-install
+    name: tlqcn-install
 server:
   port: 9080
 
 cnmq:
+  # jdk需提前安装好
+  # jvm参数配置,可提前修改安装包中的conf/tlqcn_env.sh、bkenv.sh、zkenv.sh中的jvm参数，修改好后重新制作压缩包供安装使用
+  # 集群部署的节点，都需要上传安装包和辅助工具安装包（修改一个application.yml,多个节点使用相同的配置）
   # 部署模式，支持两种 clusterOnDiffNode(在不同的节点上部署一套集群) clusterOnSameNode(在单个节点部署一套集群，测试用)
   deployType: clusterOnDiffNode
+  # 安装包类型 tlqcn或者pulsar
+  installType: tlqcn
   # 安装包路径（替换为实际上传的路径）
-  install-package-path: /home/install/install_TLQ-CN-ALL_10.0.4.0.tar.gz
+  install-package-path: /home/install/install_TLQ-CN-BASE_10.0.5.0.tar.gz
   # 启动服务脚本
-  shellPath: bin/tong-daemon
+  shellPath: bin/tlqcn-daemon
   # 初始化元数据脚本
-  metaShellPath: bin/tong
+  metaShellPath: bin/tlqcn
   # 集群名称（使用英文名称，和业务、环境等相关词语命名）
   clusterName: tlq-cn
-  # license sever服务地址
-  license-ips:
-  # license的public key
-  license-public-key:
   # 在不同的节点上部署一套集群
   cluster-on-diff-node:
     # 在每一个节点上，服务安装的目录路径
@@ -33,7 +34,7 @@ cnmq:
     # zk admin管理端口
     zk-admin-port: 9990
     # zk 元数据提供端口
-    zk-metrics-port: 8000
+    zk-metrics-port: 7000
     # zk 要部署到的机器的ip
     zk-ips:
       - 10.10.22.162
@@ -42,7 +43,7 @@ cnmq:
     # bookie 服务端口
     bookie-server-port: 3181
     # bookie 元数据提供端口
-    bookie-metrics-port: 7000
+    bookie-metrics-port: 8000
     # bookie 要部署到的机器的ip
     bookie-ips:
       - 10.10.22.162
@@ -57,17 +58,37 @@ cnmq:
       - 10.10.22.162
       - 10.10.22.163
       - 10.10.22.164
-    # config-map:
+    config-map:
       # zk 需要修改的配置文件参数
       # zk:
       #   dataDir: data/zookeeper
       # bookie 需要修改的配置文件参数
-      # bookie:
-      #   journalSyncData: true
+      bookie:
+        prometheusStatsHttpPort: 8000
+        httpServerPort: 8000
+        journalDirectories: data/bookkeeper/journal
+        ledgerDirectories: data/bookkeeper/ledgers
+        indexDirectories: data/bookkeeper/ledgers
+        # licenseType no-license(测试使用，可用90天)，其他license字段不需要配置
+        # file 本地文件模式，需配置licenseFilePath（license文件路径）
+        # active 激活模式，使用license server管理，需配置licenseIps和licensePublicKey
+        licenseType: non-license
+        licenseIps:
+        licensePublicKey:
+        licenseFilePath:
       # broker 需要修改的配置文件参数
-      # broker:
-      #   allowAutoTopicCreation: false
-
+      broker:
+        allowAutoTopicCreation: false
+        managedLedgerDefaultEnsembleSize: 2
+        managedLedgerDefaultWriteQuorum: 2
+        managedLedgerDefaultAckQuorum: 2
+        # licenseType no-license(测试使用，可用90天)，其他license字段不需要配置
+        # file 本地文件模式，需配置licenseFilePath（license文件路径）
+        # active 激活模式，使用license server管理，需配置licenseIps和licensePublicKey
+        licenseType: non-license
+        licenseIps:
+        licensePublicKey:
+        licenseFilePath:
   # 在相同的节点上部署一套集群
   cluster-on-same-node:
     # 安装节点ip地址

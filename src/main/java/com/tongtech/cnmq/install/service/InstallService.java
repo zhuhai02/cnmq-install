@@ -599,7 +599,7 @@ public class InstallService {
         StringBuilder bookieZKConfig = new StringBuilder("zk//");
         StringBuilder brokerZKConfig = new StringBuilder("zk:");
         StringBuilder webServiceUrlConfig = new StringBuilder("http://");
-        StringBuffer brokerServiceUrlConfig = new StringBuffer("pulsar://");
+        StringBuffer brokerServiceUrlConfig = new StringBuffer(cnmqConfig.getInstallType() + "://");
         for (CnmqConfig.NodeConfig nodeConfig : clusterOnSameNode.getNodeConfigs()) {
 
             int myId = atomicInteger.getAndIncrement();
@@ -765,8 +765,7 @@ public class InstallService {
                             .append(clusterOnDiffNode.getZkClientPort())
                             .append(",");
                 }
-                stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-                this.metadataStore = stringBuilder.toString();
+                this.metadataStore = stringBuilder.substring(0, stringBuilder.length() - 1);
 
                 StringBuilder webServiceUrlConfig = new StringBuilder("http://");
                 for (String brokerIp : brokerIps) {
@@ -775,18 +774,16 @@ public class InstallService {
                             .append(clusterOnDiffNode.getBrokerAdminPort())
                             .append(",");
                 }
-                webServiceUrlConfig.deleteCharAt(stringBuilder.length() - 1);
-                this.webServiceUrl = webServiceUrlConfig.toString();
+                this.webServiceUrl = webServiceUrlConfig.substring(0, webServiceUrlConfig.length() - 1);
 
-                StringBuilder brokerServiceUrlConfig = new StringBuilder("pulsar://");
+                StringBuilder brokerServiceUrlConfig = new StringBuilder(cnmqConfig.getInstallType() + "://");
                 for (String brokerIp : brokerIps) {
                     brokerServiceUrlConfig.append(brokerIp)
                             .append(":")
                             .append(clusterOnDiffNode.getBrokerServerPort())
                             .append(",");
                 }
-                brokerServiceUrlConfig.deleteCharAt(stringBuilder.length() - 1);
-                this.brokerServiceUrl = brokerServiceUrlConfig.toString();
+                this.brokerServiceUrl = brokerServiceUrlConfig.substring(0, stringBuilder.length() - 1);
             }
             zkInfos.add(zkInfo);
 

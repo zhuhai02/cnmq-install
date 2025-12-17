@@ -14,6 +14,8 @@ public class CnmqConfig {
 
     private String deployType;
 
+    private String installType;
+
     private String installPackagePath;
 
     private String shellPath;
