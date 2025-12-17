@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.tongtech.cnmq</groupId>
-    <artifactId>cnmq-install</artifactId>
+    <artifactId>tlqcn-install</artifactId>
     <version>0.0.1</version>
-    <name>cnmq-install</name>
-    <description>cnmq-install</description>
+    <name>tlqcn-install</name>
+    <description>tlqcn-install</description>
     <url/>
     <licenses>
         <license/>

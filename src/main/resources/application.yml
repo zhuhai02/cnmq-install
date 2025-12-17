@@ -5,7 +5,7 @@ server:
   port: 9080
 
 cnmq:
-  # jdk需提前安装好
+  # jdk需提前安装好，dns服务配置提前检查
   # jvm参数配置,可提前修改安装包中的conf/tlqcn_env.sh、bkenv.sh、zkenv.sh中的jvm参数，修改好后重新制作压缩包供安装使用
   # 集群部署的节点，都需要上传安装包和辅助工具安装包（修改一个application.yml,多个节点使用相同的配置）
   # 部署模式，支持两种 clusterOnDiffNode(在不同的节点上部署一套集群) clusterOnSameNode(在单个节点部署一套集群，测试用)
